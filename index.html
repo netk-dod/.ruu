@@ -1471,7 +1471,7 @@
         document.getElementById('formMessage').className = 'form-message';
     }
     
-    async function submitForm() {
+    function submitForm() {
         // Проверка обязательных полей
         const lastname = document.getElementById('lastname').value.trim();
         const firstname = document.getElementById('firstname').value.trim();
@@ -1488,54 +1488,41 @@
             return;
         }
         
-        // Блокируем кнопку
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ОТПРАВКА...';
+        // Собираем данные для письма
+        const middlename = document.getElementById('middlename').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const comment = document.getElementById('comment').value.trim();
         
-        // Собираем данные
-        const formData = new FormData();
-        formData.append('Фамилия', lastname);
-        formData.append('Имя', firstname);
-        formData.append('Отчество', document.getElementById('middlename').value.trim());
-        formData.append('Email', email);
-        formData.append('Телефон', document.getElementById('phone').value.trim());
-        formData.append('Комментарий', document.getElementById('comment').value.trim());
-        formData.append('Специальность', `${currentSpecialty.code} - ${currentSpecialty.name}`);
-        formData.append('_captcha', 'false');
-        formData.append('_template', 'box');
+        // Формируем тему письма
+        const subject = `Заявка на День открытых дверей НЭТК - ${currentSpecialty.code}`;
         
-        try {
-            // ОТПРАВКА НА ПОЧТУ - ЗДЕСЬ МОЖНО ПОМЕНЯТЬ ПОЧТУ
-            const response = await fetch('https://formsubmit.co/ajax/nrabinin13@gmail.com', {
-                method: 'POST',
-                body: formData
-            });
-            
-            const result = await response.json();
-            
-            if (result.success === 'true' || result.success === true) {
-                showMessage('✅ Заявка успешно отправлена!', 'success');
-                
-                // Показываем уведомление
-                const notification = document.getElementById('successNotification');
-                notification.classList.add('show');
-                
-                // Закрываем модальное окно через 2 секунды
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    closeModal();
-                }, 2000);
-            } else {
-                showMessage('❌ Ошибка при отправке. Попробуйте позже.', 'error');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-paper-plane"></i> ОТПРАВИТЬ ЗАЯВКУ';
-            }
-        } catch (error) {
-            showMessage('❌ Ошибка соединения. Проверьте интернет.', 'error');
-            btn.disabled = false;
-            btn.innerHTML = '<i class="fas fa-paper-plane"></i> ОТПРАВИТЬ ЗАЯВКУ';
-        }
+        // Формируем тело письма
+        const body = `НОВАЯ ЗАЯВКА НА ДЕНЬ ОТКРЫТЫХ ДВЕРЕЙ
+
+Специальность: ${currentSpecialty.code} - ${currentSpecialty.name}
+ФИО: ${lastname} ${firstname} ${middlename || ''}
+Email: ${email}
+Телефон: ${phone || 'не указан'}
+Комментарий: ${comment || 'нет'}
+
+Согласие на обработку персональных данных: ДА
+Дата отправки: ${new Date().toLocaleString('ru-RU')}`;
+        
+        // ПОЧТА ДЛЯ ОТПРАВКИ (та же, что в контактах)
+        const mailtoLink = `mailto:atpk-itc@yandex.ru?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Открываем почтовый клиент
+        window.location.href = mailtoLink;
+        
+        // Показываем уведомление об успехе
+        const notification = document.getElementById('successNotification');
+        notification.classList.add('show');
+        
+        // Сбрасываем форму и закрываем через 3 секунды
+        setTimeout(() => {
+            notification.classList.remove('show');
+            closeModal();
+        }, 3000);
     }
     
     function showMessage(text, type) {
