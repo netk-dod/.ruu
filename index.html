@@ -1480,39 +1480,16 @@
             return;
         }
         
-        // Блокируем кнопку
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ОТПРАВКА...';
+        // Собираем данные для письма
+        const middlename = document.getElementById('middlename').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const comment = document.getElementById('comment').value.trim();
         
-        // Собираем данные
-async function submitForm() {
-    // Проверка обязательных полей
-    const lastname = document.getElementById('lastname').value.trim();
-    const firstname = document.getElementById('firstname').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const consent = document.getElementById('consent').checked;
-    
-    if (!lastname || !firstname || !email) {
-        showMessage('Заполните все обязательные поля', 'error');
-        return;
-    }
-    
-    if (!consent) {
-        showMessage('Необходимо дать согласие на обработку данных', 'error');
-        return;
-    }
-    
-    // Собираем данные для письма
-    const middlename = document.getElementById('middlename').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const comment = document.getElementById('comment').value.trim();
-    
-    // Формируем тему письма
-    const subject = `Заявка на День открытых дверей НЭТК`;
-    
-    // Формируем тело письма
-    const body = `Новая заявка на день открытых дверей
+        // Формируем тему письма
+        const subject = `Заявка на День открытых дверей НЭТК`;
+        
+        // Формируем тело письма
+        const body = `Новая заявка на день открытых дверей
 
 ФИО: ${lastname} ${firstname} ${middlename || ''}
 Email: ${email}
@@ -1521,23 +1498,23 @@ Email: ${email}
 
 Согласие на обработку персональных данных: ДА
 Дата отправки: ${new Date().toLocaleString('ru-RU')}`;
-    
-    // Создаем ссылку mailto (ЗДЕСЬ МЕНЯЙТЕ ПОЧТУ)
-    const mailtoLink = `nrabinin13@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Открываем почтовый клиент
-    window.location.href = mailtoLink;
-    
-    // Показываем уведомление об успехе
-    const notification = document.getElementById('successNotification');
-    notification.classList.add('show');
-    
-    // Закрываем модальное окно через 3 секунды
-    setTimeout(() => {
-        notification.classList.remove('show');
-        closeModal();
-    }, 3000);
-}
+        
+        // ПОЧТА ДЛЯ ОТПРАВКИ - nrabinin13@gmail.com
+        const mailtoLink = `mailto:nrabinin13@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Открываем почтовый клиент
+        window.location.href = mailtoLink;
+        
+        // Показываем уведомление об успехе
+        const notification = document.getElementById('successNotification');
+        notification.classList.add('show');
+        
+        // Закрываем модальное окно через 3 секунды
+        setTimeout(() => {
+            notification.classList.remove('show');
+            closeModal();
+        }, 3000);
+    }
     
     function showMessage(text, type) {
         const msgDiv = document.getElementById('formMessage');
