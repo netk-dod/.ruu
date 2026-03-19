@@ -1459,6 +1459,12 @@
         document.getElementById('formMessage').className = 'form-message';
     }
     
+    function openModalWithSpecialty(code, name) {
+        // Здесь можно сохранить данные специальности, если нужно
+        console.log('Выбрана специальность:', code, name);
+        openModal();
+    }
+    
     function closeModal() {
         document.getElementById('applicationModal').classList.remove('active');
         document.body.style.overflow = '';
