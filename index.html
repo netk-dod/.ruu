@@ -1,4 +1,4 @@
-Вот исправленная версия. Я вернул оригинальный логотип с изображением (ссылка, которая работала изначально), поправил верстку блока с приглашением — теперь он не съезжает, все элементы на своих местах. Шапка тоже приведена в порядок.
+Вот исправленная версия. Я сделал шапку липкой (sticky) с плавным эффектом, вернул оригинальный логотип, исправил блок с приглашением — теперь он не съезжает. Все элементы на своих местах.
 ```html
 <!DOCTYPE html>
 <html lang="ru">
@@ -43,12 +43,12 @@
             padding: 0 20px;
         }
 
-        /* ШАПКА */
+        /* ШАПКА — ЛИПКАЯ (прилипает) */
         #header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px 25px;
+            padding: 16px 25px;
             background: var(--card-bg);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
             border-radius: 28px;
@@ -56,8 +56,20 @@
             margin-bottom: 20px;
             flex-wrap: wrap;
             gap: 16px;
-            position: relative;
-            z-index: 10;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.98);
+            transition: all 0.3s ease;
+        }
+
+        /* легкий эффект при скролле */
+        #header.scrolled {
+            top: 0;
+            margin-top: 0;
+            border-radius: 0 0 28px 28px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
         }
 
         .top-circles {
@@ -113,7 +125,7 @@
             flex-shrink: 0;
         }
 
-        /* ОРИГИНАЛЬНЫЙ ЛОГОТИП - картинка с внешнего ресурса */
+        /* ОРИГИНАЛЬНЫЙ ЛОГОТИП - картинка */
         .logo-image {
             width: 56px;
             height: 56px;
@@ -190,7 +202,7 @@
             letter-spacing: 1px;
         }
 
-        /* БЛОК ПРИГЛАШЕНИЯ — ИСПРАВЛЕНО (не съезжает) */
+        /* БЛОК ПРИГЛАШЕНИЯ — ИСПРАВЛЕНО (ничего не съезжает) */
         .invite-card {
             background: var(--card-bg);
             border-radius: 28px;
@@ -405,7 +417,7 @@
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000;
             opacity: 0;
             transition: opacity 0.25s ease;
             padding: 20px;
@@ -495,7 +507,7 @@
             border-radius: 60px;
             font-size: 15px;
             font-weight: 500;
-            z-index: 2000;
+            z-index: 2100;
             display: none;
             align-items: center;
             gap: 12px;
@@ -521,7 +533,7 @@
         .footer-bottom { text-align: center; padding-top: 28px; margin-top: 28px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 13px; }
 
         @media (max-width: 780px) {
-            #header { flex-direction: column; align-items: stretch; padding: 18px; }
+            #header { flex-direction: column; align-items: stretch; padding: 16px 18px; top: 10px; }
             .top-circles { margin-left: 0; justify-content: center; order: 0; }
             .header-contacts { justify-content: center; }
             .specialty-card { flex-direction: column; }
@@ -533,9 +545,9 @@
 </head>
 <body>
 <div id="wrapper">
+    <!-- ЛИПКАЯ ШАПКА -->
     <div id="header">
         <div class="logo">
-            <!-- ОРИГИНАЛЬНЫЙ ЛОГОТИП (внешняя ссылка, которая работала ранее) -->
             <img src="https://img.hhcdn.ru/employer-logo/7386449.png" alt="НЭТК" class="logo-image">
             <div class="logo-text">
                 <span class="logo-title">НЭТК</span>
@@ -557,7 +569,7 @@
         <div class="sub-hero">НИЖЕГОРОДСКИЙ ЭКОНОМИКО-ТЕХНОЛОГИЧЕСКИЙ КОЛЛЕДЖ</div>
     </div>
 
-    <!-- БЛОК ПРИГЛАШЕНИЯ - ИСПРАВЛЕН (ничего не съезжает, текст точь-в-точь) -->
+    <!-- БЛОК ПРИГЛАШЕНИЯ - ИСПРАВЛЕН, НИЧЕГО НЕ СЪЕХАЛО -->
     <div class="invite-card">
         <div class="invite-title">ПРИГЛАШАЕМ АБИТУРИЕНТОВ И ИХ РОДИТЕЛЕЙ</div>
         <div class="invite-text">Познакомьтесь с колледжем, узнайте о специальностях и сделайте первый шаг к успешной карьере.</div>
@@ -650,6 +662,16 @@
     }
     document.getElementById('applicationModal').addEventListener('click', e => { if (e.target === document.getElementById('applicationModal')) closeModal(); });
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // эффект скролла для шапки
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('header');
+        if (window.scrollY > 10) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
 </script>
 </body>
 </html>
