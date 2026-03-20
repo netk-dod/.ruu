@@ -14,13 +14,11 @@
         }
 
         :root {
-            --primary: #1e3a5f;        /* глубокий синий */
+            --primary: #1e3a5f;
             --secondary: #2c4c6e;
-            --accent: #d97706;          /* теплый янтарный */
+            --accent: #d97706;
             --accent-light: #f59e0b;
             --text-dark: #1e293b;
-            --text-light: #f8fafc;
-            --background: #f1f5f9;
             --card-bg: #ffffff;
             --success: #10b981;
             --error: #ef4444;
@@ -30,7 +28,7 @@
 
         body {
             background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
             line-height: 1.6;
             min-height: 100vh;
             color: var(--text-dark);
@@ -43,7 +41,7 @@
             padding: 0 20px;
         }
 
-        /* ШАПКА — без смещения, четко прижата */
+        /* ШАПКА */
         #header {
             display: flex;
             align-items: center;
@@ -60,7 +58,6 @@
             z-index: 10;
         }
 
-        /* Круглые кнопки соцсетей — теперь справа, не наезжают */
         .top-circles {
             display: flex;
             gap: 12px;
@@ -77,27 +74,16 @@
             height: 38px;
             border-radius: 50%;
             background: var(--primary);
-            transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            transition: all 0.3s ease;
             text-decoration: none;
             color: white;
             font-size: 18px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .circle-btn i {
-            font-size: 18px;
-            transition: transform 0.2s ease;
-        }
-
-        .circle-btn:hover {
-            transform: translateY(-3px);
-            background: var(--accent);
-            box-shadow: 0 8px 18px rgba(217, 119, 6, 0.3);
-        }
-
-        .circle-btn:hover i {
-            transform: scale(1.1);
-        }
+        .circle-btn i { font-size: 18px; transition: transform 0.2s ease; }
+        .circle-btn:hover { transform: translateY(-3px); background: var(--accent); box-shadow: 0 8px 18px rgba(217, 119, 6, 0.3); }
+        .circle-btn:hover i { transform: scale(1.1); }
 
         .circle-tooltip {
             position: absolute;
@@ -116,12 +102,7 @@
             pointer-events: none;
             font-weight: 500;
         }
-
-        .circle-btn:hover .circle-tooltip {
-            opacity: 1;
-            visibility: visible;
-            bottom: -32px;
-        }
+        .circle-btn:hover .circle-tooltip { opacity: 1; visibility: visible; bottom: -32px; }
 
         .logo {
             display: flex;
@@ -130,38 +111,31 @@
             flex-shrink: 0;
         }
 
+        /* ОРИГИНАЛЬНЫЙ ЛОГОТИП - картинка с внешнего ресурса */
         .logo-image {
             width: 56px;
             height: 56px;
             border-radius: 18px;
-            background: linear-gradient(145deg, var(--primary), var(--secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            font-weight: 800;
-            color: white;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            background: white;
         }
-
         .logo-image:hover {
-            transform: scale(1.02);
+            transform: rotate(3deg) scale(1.05);
+            border-color: var(--accent-light);
         }
 
         .logo-text {
             display: flex;
             flex-direction: column;
         }
-
         .logo-title {
             font-size: 24px;
             font-weight: 800;
             color: var(--primary);
             line-height: 1.2;
-            letter-spacing: -0.3px;
         }
-
         .logo-subtitle {
             font-size: 12px;
             color: var(--secondary);
@@ -176,7 +150,6 @@
             align-items: center;
             flex-wrap: wrap;
         }
-
         .header-contact-item {
             display: flex;
             align-items: center;
@@ -190,17 +163,8 @@
             background: rgba(30, 58, 95, 0.05);
             border-radius: 40px;
         }
-
-        .header-contact-item i {
-            color: var(--accent);
-            font-size: 14px;
-        }
-
-        .header-contact-item:hover {
-            background: rgba(217, 119, 6, 0.1);
-            color: var(--accent);
-            transform: translateY(-1px);
-        }
+        .header-contact-item i { color: var(--accent); font-size: 14px; }
+        .header-contact-item:hover { background: rgba(217, 119, 6, 0.1); color: var(--accent); transform: translateY(-1px); }
 
         /* герой */
         .hero-title {
@@ -208,7 +172,6 @@
             margin: 20px 0 10px;
             padding: 20px 10px;
         }
-
         .hero-title h1 {
             font-size: clamp(36px, 8vw, 64px);
             font-weight: 800;
@@ -217,7 +180,6 @@
             text-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
             letter-spacing: 1px;
         }
-
         .hero-title .sub-hero {
             font-size: clamp(18px, 4vw, 22px);
             color: rgba(255, 255, 255, 0.9);
@@ -226,28 +188,33 @@
             letter-spacing: 1px;
         }
 
-        /* карточка приветствия */
-        .left-text {
+        /* БЛОК ПРИГЛАШЕНИЯ — ИСПРАВЛЕНО (не съезжает) */
+        .invite-card {
             background: var(--card-bg);
             border-radius: 28px;
-            padding: 28px 32px;
-            margin: 20px 0 30px;
+            padding: 32px 36px;
+            margin: 25px 0 30px;
             border-left: 6px solid var(--accent);
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-            transition: all 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            text-align: left;
         }
-
-        .main-title {
-            font-size: clamp(24px, 5vw, 32px);
-            font-weight: 700;
-            margin-bottom: 12px;
+        .invite-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
+        }
+        .invite-title {
+            font-size: clamp(24px, 5vw, 34px);
+            font-weight: 800;
+            margin-bottom: 14px;
             color: var(--primary);
+            line-height: 1.3;
         }
-
-        .subtitle {
+        .invite-text {
             font-size: 17px;
             color: var(--secondary);
-            opacity: 0.85;
+            line-height: 1.55;
+            opacity: 0.9;
         }
 
         .event-date-badge {
@@ -264,40 +231,35 @@
             border: 1px solid rgba(217, 119, 6, 0.3);
         }
 
-        .blurred-box {
+        .info-card {
             background: white;
             border-radius: 28px;
             padding: 28px;
             margin: 30px 0;
             text-align: center;
             box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
-            transition: all 0.2s;
         }
-
-        .box-text {
+        .info-card-title {
             font-size: clamp(22px, 4vw, 28px);
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 10px;
         }
-
-        .box-subtext {
+        .info-card-sub {
             font-size: 17px;
             color: var(--secondary);
         }
 
-        /* секция специальностей */
+        /* специальности */
         .specialties-section {
             padding: 10px 0 40px;
             max-width: 860px;
             margin: 0 auto;
         }
-
         .section-header {
             text-align: center;
             margin: 30px 0 30px;
         }
-
         .section-subtitle {
             font-size: 15px;
             font-weight: 600;
@@ -310,7 +272,6 @@
             border-radius: 40px;
             backdrop-filter: blur(4px);
         }
-
         .section-title {
             font-size: clamp(32px, 6vw, 44px);
             font-weight: 800;
@@ -318,7 +279,6 @@
             margin: 18px 0 12px;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
-
         .section-description {
             font-size: 16px;
             color: rgba(255, 255, 255, 0.9);
@@ -332,7 +292,6 @@
             gap: 24px;
             margin-top: 30px;
         }
-
         .specialty-card {
             background: var(--card-bg);
             border-radius: 28px;
@@ -346,18 +305,10 @@
             opacity: 0;
             animation: cardRise 0.6s ease forwards;
         }
-
         @keyframes cardRise {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-
         .specialty-card:nth-child(1) { animation-delay: 0.05s; }
         .specialty-card:nth-child(2) { animation-delay: 0.1s; }
         .specialty-card:nth-child(3) { animation-delay: 0.15s; }
@@ -375,7 +326,6 @@
             box-shadow: 0 28px 38px rgba(0, 0, 0, 0.12);
             border-color: var(--accent-light);
         }
-
         .specialty-image {
             width: 180px;
             min-width: 180px;
@@ -386,21 +336,13 @@
             font-size: 64px;
             color: var(--accent);
             border-right: 3px solid var(--accent);
-            transition: all 0.3s;
         }
-
-        .specialty-card:hover .specialty-image {
-            background: linear-gradient(145deg, #ffedd5, #fed7aa);
-            transform: scale(1.01);
-        }
-
         .specialty-content {
             padding: 24px 28px;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
         }
-
         .specialty-code {
             display: inline-block;
             font-size: 13px;
@@ -411,9 +353,7 @@
             border-radius: 40px;
             margin-bottom: 12px;
             align-self: flex-start;
-            letter-spacing: 0.3px;
         }
-
         .specialty-title {
             font-size: 20px;
             font-weight: 800;
@@ -421,7 +361,6 @@
             line-height: 1.35;
             margin-bottom: 10px;
         }
-
         .specialty-description {
             font-size: 14px;
             color: #475569;
@@ -429,7 +368,6 @@
             margin-bottom: 20px;
             flex-grow: 1;
         }
-
         .specialty-btn {
             background: var(--primary);
             color: white;
@@ -446,24 +384,14 @@
             transition: all 0.25s ease;
             width: fit-content;
             min-width: 180px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
-
         .specialty-btn:hover {
             background: var(--accent);
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3);
         }
 
-        .specialty-btn i {
-            transition: transform 0.2s;
-        }
-
-        .specialty-btn:hover i {
-            transform: translateX(4px);
-        }
-
-        /* модальное окно — чистые цвета */
+        /* модалка */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -480,12 +408,7 @@
             transition: opacity 0.25s ease;
             padding: 20px;
         }
-
-        .modal-overlay.active {
-            display: flex;
-            opacity: 1;
-        }
-
+        .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content {
             background: white;
             padding: 32px 32px 40px;
@@ -498,7 +421,6 @@
             box-shadow: 0 30px 50px rgba(0, 0, 0, 0.25);
             border-top: 6px solid var(--accent);
         }
-
         .modal-close {
             position: absolute;
             top: 20px;
@@ -516,43 +438,12 @@
             align-items: center;
             justify-content: center;
         }
-
-        .modal-close:hover {
-            color: var(--error);
-            background: #fef2f2;
-            transform: rotate(90deg);
-        }
-
-        .modal-title {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .modal-subtitle {
-            font-size: 15px;
-            color: var(--accent);
-            font-weight: 600;
-            margin-bottom: 28px;
-            border-bottom: 2px solid #f1f5f9;
-            padding-bottom: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 6px;
-        }
-
-        .form-group input,
-        .form-group textarea {
+        .modal-close:hover { color: var(--error); background: #fef2f2; transform: rotate(90deg); }
+        .modal-title { font-size: 28px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+        .modal-subtitle { font-size: 15px; color: var(--accent); font-weight: 600; margin-bottom: 28px; border-bottom: 2px solid #f1f5f9; padding-bottom: 14px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 6px; }
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 14px 16px;
             border: 1.5px solid #e2e8f0;
@@ -560,16 +451,8 @@
             font-size: 15px;
             transition: all 0.2s;
             font-family: inherit;
-            background: #fefefe;
         }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
-        }
-
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1); }
         .consent-group {
             margin-top: 20px;
             padding: 16px;
@@ -577,23 +460,8 @@
             border-radius: 24px;
             border-left: 4px solid var(--accent);
         }
-
-        .consent-group label {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            font-weight: 500;
-            font-size: 13px;
-            cursor: pointer;
-        }
-
-        .consent-group input {
-            width: 18px;
-            height: 18px;
-            margin-top: 2px;
-            accent-color: var(--accent);
-        }
-
+        .consent-group label { display: flex; align-items: flex-start; gap: 12px; font-weight: 500; font-size: 13px; cursor: pointer; }
+        .consent-group input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); }
         .form-submit {
             background: var(--primary);
             color: white;
@@ -611,34 +479,10 @@
             justify-content: center;
             gap: 10px;
         }
-
-        .form-submit:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px rgba(217, 119, 6, 0.3);
-        }
-
-        .form-message {
-            margin-top: 16px;
-            padding: 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            text-align: center;
-            display: none;
-        }
-
-        .form-message.success {
-            display: block;
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .form-message.error {
-            display: block;
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
+        .form-submit:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 20px rgba(217, 119, 6, 0.3); }
+        .form-message { margin-top: 16px; padding: 12px; border-radius: 20px; font-size: 14px; text-align: center; display: none; }
+        .form-message.success { display: block; background: #d1fae5; color: #065f46; }
+        .form-message.error { display: block; background: #fee2e2; color: #991b1b; }
         .notification {
             position: fixed;
             bottom: 24px;
@@ -654,12 +498,8 @@
             align-items: center;
             gap: 12px;
             box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
-            backdrop-filter: blur(4px);
         }
-
-        .notification.show {
-            display: flex;
-        }
+        .notification.show { display: flex; }
 
         /* футер */
         .footer {
@@ -669,87 +509,23 @@
             margin-top: 70px;
             border-radius: 40px 40px 0 0;
         }
-
-        .footer-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        .footer-header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .footer-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-        }
-
-        .footer-divider {
-            width: 70px;
-            height: 3px;
-            background: var(--accent);
-            margin: 16px auto 20px;
-            border-radius: 4px;
-        }
-
-        .help-message {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 32px;
-            padding: 28px;
-            text-align: center;
-            border-left: 4px solid var(--accent);
-        }
-
-        .help-message p {
-            font-size: 16px;
-            line-height: 1.7;
-            margin-bottom: 8px;
-        }
-
-        .help-message strong {
-            color: var(--accent-light);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 28px;
-            margin-top: 28px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 13px;
-        }
+        .footer-container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+        .footer-header { text-align: center; margin-bottom: 32px; }
+        .footer-title { font-size: 28px; font-weight: 700; color: white; }
+        .footer-divider { width: 70px; height: 3px; background: var(--accent); margin: 16px auto 20px; border-radius: 4px; }
+        .help-message { background: rgba(255, 255, 255, 0.05); border-radius: 32px; padding: 28px; text-align: center; border-left: 4px solid var(--accent); }
+        .help-message p { font-size: 16px; line-height: 1.7; margin-bottom: 8px; }
+        .help-message strong { color: var(--accent-light); }
+        .footer-bottom { text-align: center; padding-top: 28px; margin-top: 28px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-size: 13px; }
 
         @media (max-width: 780px) {
-            #header {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 18px;
-            }
-            .top-circles {
-                margin-left: 0;
-                justify-content: center;
-                order: 0;
-            }
-            .header-contacts {
-                justify-content: center;
-            }
-            .specialty-card {
-                flex-direction: column;
-            }
-            .specialty-image {
-                width: 100%;
-                height: 120px;
-                border-right: none;
-                border-bottom: 3px solid var(--accent);
-            }
-            .specialty-btn {
-                width: 100%;
-            }
-            .modal-content {
-                padding: 28px 22px;
-            }
+            #header { flex-direction: column; align-items: stretch; padding: 18px; }
+            .top-circles { margin-left: 0; justify-content: center; order: 0; }
+            .header-contacts { justify-content: center; }
+            .specialty-card { flex-direction: column; }
+            .specialty-image { width: 100%; height: 120px; border-right: none; border-bottom: 3px solid var(--accent); }
+            .specialty-btn { width: 100%; }
+            .invite-card { padding: 24px 22px; }
         }
     </style>
 </head>
@@ -757,7 +533,8 @@
 <div id="wrapper">
     <div id="header">
         <div class="logo">
-            <div class="logo-image">НЭТК</div>
+            <!-- ОРИГИНАЛЬНЫЙ ЛОГОТИП (внешняя ссылка, которая работала ранее) -->
+            <img src="https://img.hhcdn.ru/employer-logo/7386449.png" alt="НЭТК" class="logo-image">
             <div class="logo-text">
                 <span class="logo-title">НЭТК</span>
                 <span class="logo-subtitle">Нижегородский экономико‑технологический колледж</span>
@@ -778,18 +555,19 @@
         <div class="sub-hero">НИЖЕГОРОДСКИЙ ЭКОНОМИКО-ТЕХНОЛОГИЧЕСКИЙ КОЛЛЕДЖ</div>
     </div>
 
-    <div class="left-text">
-        <h1 class="main-title">ПРИГЛАШАЕМ АБИТУРИЕНТОВ И ИХ РОДИТЕЛЕЙ</h1>
-        <p class="subtitle">Познакомьтесь с колледжем, узнайте о специальностях и сделайте первый шаг к успешной карьере.</p>
+    <!-- БЛОК ПРИГЛАШЕНИЯ - ИСПРАВЛЕН (ничего не съезжает, текст точь-в-точь) -->
+    <div class="invite-card">
+        <div class="invite-title">ПРИГЛАШАЕМ АБИТУРИЕНТОВ И ИХ РОДИТЕЛЕЙ</div>
+        <div class="invite-text">Познакомьтесь с колледжем, узнайте о специальностях и сделайте первый шаг к успешной карьере.</div>
     </div>
 
     <div class="event-date-badge">
         🗓️ 28 МАРТА 2026 · 11:00
     </div>
 
-    <div class="blurred-box">
-        <p class="box-text">Нижегородский экономико‑технологический колледж</p>
-        <p class="box-subtext">Более 50 лет готовим специалистов</p>
+    <div class="info-card">
+        <div class="info-card-title">Нижегородский экономико‑технологический колледж</div>
+        <div class="info-card-sub">Более 50 лет готовим специалистов</div>
     </div>
 
     <section class="specialties-section">
@@ -813,6 +591,7 @@
         </div>
     </section>
 
+    <!-- модальное окно -->
     <div class="modal-overlay" id="applicationModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
