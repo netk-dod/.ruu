@@ -1171,10 +1171,7 @@
         </div>
         
         <div class="header-contacts">
-            <a href="tel:+78314271432" class="header-contact-item">
-                <i class="fas fa-phone"></i>
-                7-14-32
-            </a>
+            <!-- Телефон убран -->
             <a href="mailto:atpk-itc@yandex.ru" class="header-contact-item">
                 <i class="fas fa-envelope"></i>
                 atpk-itc@yandex.ru
@@ -1367,6 +1364,9 @@
                     <div class="modal-subtitle">28 марта 2026, начало в 11:00</div>
                     
                     <form id="applicationForm" onsubmit="return false;">
+                        <input type="hidden" id="specialtyCode" name="specialtyCode">
+                        <input type="hidden" id="specialtyName" name="specialtyName">
+                        
                         <div class="form-group">
                             <label>Фамилия *</label>
                             <input type="text" id="lastname" required placeholder="Иванов">
@@ -1405,7 +1405,7 @@
                             <small>Нажимая кнопку, вы даете согласие на обработку данных</small>
                         </div>
                         
-                        <button type="button" class="form-submit" onclick="submitForm()" id="submitBtn">
+                        <button type="button" class="form-submit" onclick="submitToGoogleSheet()" id="submitBtn">
                             <i class="fas fa-paper-plane"></i> ОТПРАВИТЬ ЗАЯВКУ
                         </button>
                         
@@ -1417,7 +1417,7 @@
             <!-- Уведомление об успешной отправке -->
             <div class="notification" id="successNotification">
                 <i class="fas fa-check-circle"></i>
-                <span>✅ Заявка успешно отправлена! Мы свяжемся с вами.</span>
+                <span>✅ Заявка успешно отправлена в Google Таблицу! Мы свяжемся с вами.</span>
             </div>
             
             <footer class="footer">
@@ -1430,7 +1430,7 @@
                     <div class="help-message">
                         <p><strong>Адрес:</strong> г. Арзамас, проспект Ленина, 200</p>
                         <p><strong>Проезд:</strong> автобусы №1, 2, 5 до остановки "Техникум"</p>
-                        <p><strong>Телефон:</strong> 7-14-32</p>
+                        <!-- Телефон убран -->
                         <p><strong>Email:</strong> atpk-itc@yandex.ru</p>
                         <p><strong>Сайт:</strong> netk.nnov.ru</p>
                         <p><strong>Режим работы:</strong> пн-пт с 9:00 до 18:00</p>
@@ -1447,6 +1447,7 @@
     </div>
 </div>
 
+<script src="https://sheetdb.io/scripts/sheetdb.js"></script>
 <script>
     let currentSpecialty = { code: '', name: '' };
     
@@ -1460,6 +1461,8 @@
     function openModalWithSpecialty(code, name) {
         currentSpecialty.code = code;
         currentSpecialty.name = name;
+        document.getElementById('specialtyCode').value = code;
+        document.getElementById('specialtyName').value = name;
         openModal();
     }
     
@@ -1471,7 +1474,7 @@
         document.getElementById('formMessage').className = 'form-message';
     }
     
-    function submitForm() {
+    function submitToGoogleSheet() {
         // Проверка обязательных полей
         const lastname = document.getElementById('lastname').value.trim();
         const firstname = document.getElementById('firstname').value.trim();
@@ -1488,41 +1491,67 @@
             return;
         }
         
-        // Собираем данные для письма
+        // Блокируем кнопку
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> ОТПРАВКА...';
+        
+        // Собираем данные
         const middlename = document.getElementById('middlename').value.trim();
         const phone = document.getElementById('phone').value.trim();
         const comment = document.getElementById('comment').value.trim();
         
-        // Формируем тему письма
-        const subject = `Заявка на День открытых дверей НЭТК - ${currentSpecialty.code}`;
+        // Формируем данные для отправки в Google Sheets через SheetDB
+        const data = {
+            data: [
+                {
+                    "Дата": new Date().toLocaleString('ru-RU'),
+                    "Специальность код": currentSpecialty.code,
+                    "Специальность название": currentSpecialty.name,
+                    "Фамилия": lastname,
+                    "Имя": firstname,
+                    "Отчество": middlename || '-',
+                    "Email": email,
+                    "Телефон": phone || '-',
+                    "Комментарий": comment || '-',
+                    "Согласие": "Да"
+                }
+            ]
+        };
         
-        // Формируем тело письма
-        const body = `НОВАЯ ЗАЯВКА НА ДЕНЬ ОТКРЫТЫХ ДВЕРЕЙ
-
-Специальность: ${currentSpecialty.code} - ${currentSpecialty.name}
-ФИО: ${lastname} ${firstname} ${middlename || ''}
-Email: ${email}
-Телефон: ${phone || 'не указан'}
-Комментарий: ${comment || 'нет'}
-
-Согласие на обработку персональных данных: ДА
-Дата отправки: ${new Date().toLocaleString('ru-RU')}`;
-        
-        // ПОЧТА ДЛЯ ОТПРАВКИ (та же, что в контактах)
-        const mailtoLink = `mailto:atpk-itc@yandex.ru?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        // Открываем почтовый клиент
-        window.location.href = mailtoLink;
-        
-        // Показываем уведомление об успехе
-        const notification = document.getElementById('successNotification');
-        notification.classList.add('show');
-        
-        // Сбрасываем форму и закрываем через 3 секунды
-        setTimeout(() => {
-            notification.classList.remove('show');
-            closeModal();
-        }, 3000);
+        // ОТПРАВКА В GOOGLE TABL - ЗАМЕНИТЕ URL НА ВАШ!
+        fetch('https://sheetdb.io/api/v1/f94xz4vcxn5if', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.created) {
+                // Успешная отправка
+                const notification = document.getElementById('successNotification');
+                notification.classList.add('show');
+                
+                // Сбрасываем форму и закрываем
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    closeModal();
+                }, 3000);
+            } else {
+                showMessage('Ошибка при отправке. Попробуйте позже.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            showMessage('Ошибка соединения. Проверьте интернет.', 'error');
+        })
+        .finally(() => {
+            // Разблокируем кнопку
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> ОТПРАВИТЬ ЗАЯВКУ';
+        });
     }
     
     function showMessage(text, type) {
@@ -1539,6 +1568,7 @@ Email: ${email}
         if (e.key === 'Escape') closeModal();
     });
 </script>
+
 
 </body>
 </html>
